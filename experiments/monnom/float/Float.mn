@@ -1,0 +1,89 @@
+class Point
+{
+	public Float x;
+	public Float y;
+	public Float z;
+	public constructor(Float i)
+	{
+		x = Math.Sin(i);
+		y = Math.Cos(i) * 3;
+		z = (x * x) / 2;
+	}
+	
+	public fun Normalize() : Void
+	{
+		Float norm = Math.Sqrt(x * x + y * y + z * z);
+		x = x / norm;
+		y = y / norm;
+		z = z / norm;
+	}
+	
+	public fun Maximize(Point other) : Point
+	{
+		if(x < other.x)
+		{
+			x = other.x;
+		}
+		if(y < other.y)
+		{
+			y = other.y;
+		}
+		if(z < other.z)
+		{
+			z = other.z;
+		}
+		return this;
+	}
+	
+	public fun Print() : Void
+	{
+		"<".Print();
+		x.ToString().Print();
+		", ".Print();
+		y.ToString().Print();
+		", ".Print();
+		z.ToString().Print();
+		"> ".Print();
+	}
+}
+
+class PointMapFun implements Fun<Int, Point>
+{
+	public constructor()
+	{
+	}
+	public fun this(Int i) : Point
+	{
+		return new Point(i + 0.0);
+	}
+}
+
+class Main
+{
+	public static fun Maximize(ArrayList<Point> points) : Point
+	{
+		Point next = points.Get(0);
+		foreach(Point p in Enumerable.From<Point>(points,1))
+		{
+			next = next.Maximize(p);
+		}
+		return next;
+	}
+	public static fun Benchmark(Int n) : Point
+	{
+		ArrayList<Point> points = Enumerable.ToList<Point>(Enumerable.Map<Int, Point>([0..n], new PointMapFun()));
+		foreach(Point p in points)
+		{
+			p.Normalize();
+		}
+		return Maximize(points);
+	}
+	public static fun Main() : Void
+	{
+		Timer t = new Timer();
+		Point result = Benchmark(100000);
+		t.PrintDifference();
+		"\n".Print();
+		result.Print();
+	}
+}

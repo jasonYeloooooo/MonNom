@@ -1,0 +1,28 @@
+class Fruit
+{
+    public Int Size;
+    public String FruitName;
+    public constructor(String name,Int size){
+      Size = 1;
+      FruitName = "Apple";
+    }
+    public instance DefaultFruit
+    {
+       Size = 1;
+       FruitName = "Apple";
+    }
+     public multi instance OtherFruit(String name,Int size)
+    {
+        Size = 1;
+        FruitName = name;
+    }
+}
+class Main{
+	public static fun Main() : Void
+	{
+            Fruit f = new Fruit("Apple", 20);
+            Fruit ff = Fruit::OtherFruit("Banana",20);
+            String s = ff.FruitName;
+            s.Print();
+	}
+}

@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "NomC": {
+      "commandName": "Project",
+      "commandLineArgs": "-p \"C:\\Users\\ROG\\Desktop\\anu\\gradual Typing\\monnom\\experiments\\monnom\\test\" --project Test"
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "environmentVariables": {},
+      "distributionName": ""
+    }
+  }
+}
