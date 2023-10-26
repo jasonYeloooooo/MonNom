@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "NomC": {
-      "commandName": "Project",
-      "commandLineArgs": "-p \"C:\\MonNomBenchmarks\\SieveShort\\.BM_CCCCD\" --project Sieve"
-    }
-  }
-}

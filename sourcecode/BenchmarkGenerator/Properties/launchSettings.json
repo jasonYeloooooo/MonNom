@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "BenchmarkGenerator": {
-      "commandName": "Project",
-      "commandLineArgs": "-p \"c:\\MonNomBenchmarks\\float\" -r 1 --project Float"
-    }
-  }
-}

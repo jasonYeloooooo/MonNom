@@ -1,3 +1,0 @@
-#!/bin/sh
-exec node "$MONNOMBASE/experiments/higgs/higgscheck/tscontracts/built/local/tsc.js" "$@"
-
