@@ -762,9 +762,9 @@ namespace Nom.TypeChecker
             
             if (!ret.HasElem)
             {
-                throw new InternalException("Instance not found!");
+                throw new TypeCheckException("$0 does not have Instance that match the given arguments!", expr.Class); 
             }
-           
+
             var result = ret.Elem.GenerateCall(argResults, env);
             return result;
         };

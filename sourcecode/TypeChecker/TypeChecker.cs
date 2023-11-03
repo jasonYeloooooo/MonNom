@@ -949,7 +949,7 @@ namespace Nom.TypeChecker
                                 }
                                 if (!pass)
                                 {
-                                    throw new TypeCheckException("instance should contain all the field in the class");
+                                    throw new TypeCheckException("All fields in $0 must be declared  ", id.Identifier);
 
                                 }
 
@@ -957,18 +957,22 @@ namespace Nom.TypeChecker
                             id.Instructions = defaultInitializers.Flatten().Concat(str);
                             id.RegisterCount = ite.RegisterCount;
                             //check the extends
+                            Parser.Identifier Identifier = null;
                             if (idef.SuperName != null) {
                                 bool flag = false;
+                                Identifier = idef.SuperName;
                                 foreach (var cd in tcb.Classes) {
-                                    if (cd.Key.Name.ToString() == tci.Container.SuperClass.Elem.Element.Name
-                                       )
+                                    if (cd.Key.Name.ToString() == tci.Container.SuperClass.Elem.Element.Name)
                                     {
                                         
                                         foreach (InstanceDef i in cd.Value.Container.Instances)
                                         {
+
                                             if (i.Identifier.Name.ToString() == idef.SuperName.ToString()&& i.Visibility != Visibility.Private)
                                             {
+                                               
                                                 flag = true;
+                                                Identifier = idef.SuperName;
                                                 break;
                                             }
                                         }
@@ -976,7 +980,7 @@ namespace Nom.TypeChecker
                                 }
                                 if (!flag)
                                 {
-                                    throw new TypeCheckException("extends is invalid");
+                                    throw new TypeCheckException("Extends is invalid, can not find instance $0 in class $1", Identifier, id.Identifier);
                                 }
 
 

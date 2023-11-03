@@ -1,28 +1,32 @@
 class Fruit
 {
     public Int Size;
-    public String FruitName;
+    public String Name;
     public constructor(String name,Int size){
-      Size = 1;
-      FruitName = "Apple";
+      Size = size;
+      Name = name;
+	
     }
-    public instance DefaultFruit
-    {
-       Size = 1;
-       FruitName = "Apple";
-    }
-     public multi instance OtherFruit(String name,Int size)
-    {
-        Size = 1;
-        FruitName = name;
-    }
+
+   private instance DefaultFruit{
+	Size = 10;
+	Name = "";
+   }
 }
+class Apple extends Fruit{
+     public Int Size;
+     public String Name;	
+
+   public multi instance FruitApple(Int s,String x){
+	Size = 10;
+	Name = "";
+   }
+}
+
 class Main{
-	public static fun Main() : Void
-	{
-            Fruit f = new Fruit("Apple", 20);
-            Fruit ff = Fruit::OtherFruit("Banana",20);
-            String s = ff.FruitName;
-            s.Print();
+    public static fun Main() : Void
+      {
+		Fruit fruit = new Fruit(" ",10);
+		Fruit f = Fruit::DefaultFruit;
 	}
 }

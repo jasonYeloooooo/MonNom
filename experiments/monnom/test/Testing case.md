@@ -18,17 +18,18 @@ class Fruit
        Weight = 10;
        s = "apple";
     }
-    public multi instance OtherFruit(Int weight)
+    public multi instance OtherFruit(String name , weight)
     {
        Weight = weight;
+       s = name;
      }
 }
 class Main{
 	public static fun Main() : Void
 	{
 	    Fruit fruit = new Fruit(" ",10);
-        fruit = Fruit::DefaultFruit(); 
-        fruit = Fruit::OtherFruit(10); 
+            fruit = Fruit::DefaultFruit(); 
+            fruit = Fruit::OtherFruit("Apple",10); 
 	}
 }
 ```
@@ -69,21 +70,35 @@ class Main{
 
 ```
 
-### 4. Default expression with instance assignment 
+### 3. Default expression with instance assignment 
 
 ```c#
- public instance DefaultFruit
+class Fruit
+{
+    public Fruit f;
+    public String s;
+    public instance DefaultFruit
     {
-       FruitName = "apple";
+       f = this;
+       s = "Apple";
     }
-    public multi instance OtherFruit(Int size)
+    public multi instance OtherFruit(String a)
     {
-       FruitName = Fruit::DefaultFruit;
-       Size = size;
+       f = Fruit::DefaultFruit;
+       s = a;
     }
+}
+class Main{
+	public static fun Main() : Void
+	{
+	    
+      	    Fruit fruit = Fruit::DefaultFruit(); 
+            Fruit fruit2 = Fruit::OtherFruit("Banana"); 
+	}
+}
 ```
 
-### 5. Using Instance to initialize field 
+### 4. Using Instance to initialize field 
 
 and the assignment field is using 'this'
 
@@ -126,7 +141,7 @@ class Tree{
 }
 ```
 
-### 6. need initial all the field 
+### 5. need initial all the field 
 
 ```c#
 class Fruit
@@ -185,48 +200,39 @@ class Main{
 ### 1. instance expression with wrong arguments
 
 ```c#
-public instance DefaultFruit
-    {
-       FruitName = "apple";
-    }
-public multi instance OtherFruit(Int size)
-    {
-       f = Fruit::DefaultFruit(1,2,3);
-       Size = size;
-    }
-```
-
-
-
-### 2. Assignment Field is not in the class  Field
-
-```c#
 class Fruit
 {
-    public Int Size;
-    public String FruitName;
     public Fruit f;
-    public constructor(String name,Int size){
-      Size = size;
-      FruitName = name;
-      f = new Fruit("banana",5);
-      Size = Maximize(10);
+    public String FruitName;
+    public constructor (String str){
+	f = Fruit::DefaultFruit;
+        FruitName = str;
     }
     public instance DefaultFruit
-    {
+     {
+       f = this;
        FruitName = "apple";
     }
-    public multi instance OtherFruit(Int size)
+   public multi instance OtherFruit(String name)
     {
-       //  here 'size' should be in the class field which here is Size, FruitName , f
-       size = Size;
+       f = Fruit::DefaultFruit;
+       FruitName = name;
     }
-    public static fun Maximize(Int x) : Int
-	{		
-		return x;
+}
+class Main{
+	public static fun Main() : Void
+	{
+	 
+      	    Fruit fruit = Fruit::DefaultFruit(11); 
+            Fruit fruit2 = Fruit::OtherFruit("Banana"); 
 	}
 }
 ```
+
+ERROR:
+`Fruit<> does not have Instance that match the given arguments!`
+
+
 
 
 
@@ -241,7 +247,12 @@ class Fruit
     }
 ```
 
+error: `Fruit<> does not have Instance that match the given arguments!
+Fruit<> does not have Instance that match the given arguments!`
 
+
+
+cannot find the instance expression 
 
 ### 4.Instance Type
 
@@ -259,18 +270,48 @@ class Fruit
 ### 5. instance assignment type wrong
 
 ```c#
-public instance DefaultFruit
-    {
-       f = this;
-       FruitName = 1; 
+class Fruit
+{
+    public Fruit f;
+    public String FruitName;
+    public constructor (String str){
+	f = Tree::DefaultTree;
+        FruitName = str;
     }
+    public instance DefaultFruit
+     {
+       f = this;
+       FruitName = "apple";
+    }
+   public multi instance OtherFruit(String name)
+    {
+       f = Fruit::DefaultFruit;
+       FruitName = name;
+    }
+}
+
+class Tree{
+	public String name;
+	public constructor(String n){
+		name = n;
+	}
+	public instance DefaultTree{
+		name = "AppleTree";
+	}
+}
+class Main{
+	public static fun Main() : Void
+	{
+	 
+      	    Fruit fruit = Fruit::DefaultFruit(11); 
+            Fruit fruit2 = Fruit::OtherFruit("Banana"); 
+	}
+}
 ```
 
 
 
-
-
-
+error: `Result of assignment expression has wrong type for variable f (Test.mn:6:1) even optimistically!`
 
 
 
@@ -292,6 +333,8 @@ class Fruit
 }
 ```
 
+error `All fields in DefaultFruit (Test.mn:10:20) must be declared`
+
 
 
 ### Super class
@@ -299,19 +342,52 @@ class Fruit
 finished
 
 ```C#
+class Fruit
+{
+    public Int Size;
+    public String Name;
+    public constructor(String name,Int size){
+      Size = size;
+      Name = name;
+    }
+
+   public instance DefaultFruit{
+	Size = 10;
+        Name = "APple";
+   }
+}
 class Apple extends Tree{
      public Int Size;
      public String Name;	
 
-   public multi instance FruitApple(Int s,String x) extends DefaultFruit{
+   public multi instance FruitApple(Int s,String x) extends DefaultAppleTree{
 	Size = 10;
 	Name = "";
    }
 }
-class Tree{
 
+class Tree{
+	public String name;
+	public constructor(String n){
+		name = n;
+	}
+	public instance DefaultTree{
+		name = "AppleTree";
+	}
+}
+class Main{
+	public static fun Main() : Void
+	{
+	 
+      	    Fruit fruit = Fruit::DefaultFruit(); 
+         
+	}
 }
 ```
+
+error : `Extends is invalid, can not find instance DefaultAppleTree (Test.mn:19:60) in class FruitApple (Test.mn:19:25)`
+
+
 
 ### private instance
 
@@ -347,6 +423,53 @@ class Main{
 	}
 }
 ```
+
+error `Extends is invalid, can not find instance DefaultFruit (Test.mn:19:60) in class FruitApple (Test.mn:19:25)`
+
+we can not extend the instance if the instance is private in parent class
+
+```c#
+class Fruit
+{
+    public Int Size;
+    public String Name;
+    public constructor(String name,Int size){
+      Size = size;
+      Name = name;
+	
+    }
+
+   private instance DefaultFruit{
+	Size = 10;
+	Name = "";
+   }
+}
+class Apple extends Fruit{
+     public Int Size;
+     public String Name;	
+
+   public multi instance FruitApple(Int s,String x){
+	Size = 10;
+	Name = "";
+   }
+}
+
+class Main{
+    public static fun Main() : Void
+      {
+		Fruit fruit = new Fruit(" ",10);
+		Fruit f = Fruit::DefaultFruit;
+	}
+}
+```
+
+error `Fruit<> does not have Instance that match the given arguments!`\
+
+cannot find the instance because it is private in Fruit, if we want to use the private instance, we can only use in the Fruit CLass not in the MAin.
+
+
+
+
 
 
 
